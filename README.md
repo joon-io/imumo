@@ -1,8 +1,8 @@
-[![Version](https://img.shields.io/npm/v/extendable-record.svg)](https://www.npmjs.com/package/extendable-record)
-[![Build Status](https://travis-ci.org/djoeman84/extendable-record.svg?branch=master)](https://travis-ci.org/djoeman84/extendable-record)
-[![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/djoeman84/extendable-record/blob/master/LICENSE)
-[![dependencies](https://david-dm.org/djoeman84/extendable-record.svg)](https://david-dm.org/djoeman84/extendable-record)
-[![devDependency Status](https://david-dm.org/djoeman84/extendable-record/dev-status.svg)](https://david-dm.org/djoeman84/extendable-record#info=devDependencies)
+[![Version](https://img.shields.io/npm/v/imumo.svg)](https://www.npmjs.com/package/imumo)
+[![Build Status](https://travis-ci.org/joon-io/imumo.svg?branch=master)](https://travis-ci.org/joon-io/imumo)
+[![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/joon-io/imumo/blob/master/LICENSE)
+[![dependencies](https://david-dm.org/joon-io/imumo.svg)](https://david-dm.org/joon-io/imumo)
+[![devDependency Status](https://david-dm.org/joon-io/imumo/dev-status.svg)](https://david-dm.org/joon-io/imumo#info=devDependencies)
 [![airbnb code style](https://img.shields.io/badge/code%20style-airbnb-fd5c63.svg)](https://github.com/airbnb/javascript)
 
 ---
@@ -13,14 +13,18 @@ Extends [ImmutableJS Records](http://facebook.github.io/immutable-js/docs/#/Reco
 
 ## Getting Started
 ```shell
-npm install extendable-record --save
+npm install imumo --save
 ```
 
 ## Usage
 ```javascript
-import { ExtendableRecord } from  'extendable-record';
+import { ImmutableModel } from  'imumo';
 
-class BaseModel extends ExtendableRecord {
+class BaseModel extends ImmutableModel {
+  // Define getters to expose easy access to properties
+  get value() {
+    return this.get('value', null);
+  }
   isComplete() {
     return true;
   }
@@ -29,17 +33,14 @@ class BaseModel extends ExtendableRecord {
   }
 }
 
-// default properties describe the set of properties which can be
-// set/read. Properties are exposed via getters, so you can use the syntax
-// var model = new BaseModel();
-// console.log(model.value);
-BaseModel.defaultProperties = {
-  value: null
-};
-
 class TextModel extends BaseModel {
+  // create synthetic properties
   get length() {
     return this.value.length;
+  }
+  // override default values
+  get value() {
+    return this.get('value', '');
   }
   isComplete() {
     return this.value.length !== 0;
@@ -47,17 +48,11 @@ class TextModel extends BaseModel {
   isValid() {
     return typeof this.value === 'string';
   }
+  // 'Mutable' methods should all return a new immutable instance
   toLower() {
     return this.set('value', this.value.toLocaleLowerCase());
   }
 }
-
-// default properties extend and overwrite the properties of
-// the parent. Here, TextModel instances will always default to '',
-// but we do have the option of adding extra properties
-TextModel.defaultProperties = {
-  value: ''
-};
 
 class EmailModel extends TextModel {
   isValid() {
@@ -66,6 +61,12 @@ class EmailModel extends TextModel {
 }
 
 class NumberModel extends BaseModel {
+  get units() {
+    return this.get('units', null);
+  }
+  get value() {
+    return this.get('value', 0);
+  }
   isValid() {
     return typeof this.value === "number";
   }
@@ -76,11 +77,6 @@ class NumberModel extends BaseModel {
     return this.units ? `${this.value} ${this.units}` : this.value;
   }
 }
-
-NumberModel.defaultProperties = {
-  value: 0,
-  units: null
-};
 
 
 
@@ -95,6 +91,28 @@ const myBankAfterDreamOfWinningLotto = myBank.add(100000000);
 console.log(myBankAfterDreamOfWinningLotto.toString()); // 100000000 dollars
 console.log(myBank.toString()); // 0 dollars -- myBank was not mutated :(
 
+```
+
+## Performance
+Since the models are immutable, we can easily memoize the last return value of argument-less methods. This lets you write expensive getters without having to worry too much about the performance impact. This also allows you to use strict equality checking against derived data (Pure render all the models).
+```javascript
+import { ImmutableModel } from 'imumo';
+
+class MemoizedModel extends ImmutableModel {
+  constructor() {
+    this.getFilteredList = this.memoize(this.getFilteredList);
+  }
+  get items() {
+    return this.get('items', []);
+  }
+  get filterTerm() {
+    return this.get('filterTerm', '');
+  }
+  getFilteredList() {
+    return this.items
+      .filter(item => this.filterTerm.indexOf(item) != -1);
+  }
+}
 ```
 
 ## Credits

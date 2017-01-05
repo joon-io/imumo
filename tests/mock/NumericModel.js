@@ -1,8 +1,12 @@
-import { ExtendableRecord } from '../../src/index.js';
+import { ImmutableModel } from '../../src/index.js';
 
 import { PrimitiveModel } from './PrimitiveModel';
 
 export class NumericModel extends PrimitiveModel {
+  get units() {
+    return this.get('units', null);
+  }
+
   isPlural() {
     return this.value !== 1;
   }
@@ -21,17 +25,15 @@ export class NumericModel extends PrimitiveModel {
   }
 }
 
-NumericModel.defaultProperties = {
-  units: null,
-};
-
-export class Unit extends ExtendableRecord {
+export class Unit extends ImmutableModel {
   constructor(singular, plural) {
     super({ singular, plural });
   }
-}
 
-Unit.defaultProperties = {
-  singular: 'unit',
-  plural: 'units',
-};
+  get singular() {
+    return this.get('singular', 'unit');
+  }
+  get plural() {
+    return this.get('plural', 'units');
+  }
+}

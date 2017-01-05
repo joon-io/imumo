@@ -1,15 +1,21 @@
-import { ExtendableRecord } from '../../src/index.js';
+import { ImmutableModel } from '../../src/index.js';
 import { abstract } from './util';
 
-export class BaseModel extends ExtendableRecord {
+export class BaseModel extends ImmutableModel {
+  get isRequired() {
+    return this.get('isRequired', false);
+  }
+  get name() {
+    return this.get('name', '');
+  }
+  get id() {
+    return this.get('id', null);
+  }
 
+  isValid() {
+    return abstract();
+  }
+  isComplete() {
+    return abstract();
+  }
 }
-
-BaseModel.prototype.isValid = abstract;
-BaseModel.prototype.isComplete = abstract;
-
-BaseModel.defaultProperties = {
-  isRequired: false,
-  name: '',
-  id: null,
-};

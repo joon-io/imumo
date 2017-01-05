@@ -1,10 +1,10 @@
 import { expect } from 'chai';
-import { ExtendableRecord } from '../src/index.js';
+import { ImmutableModel } from '../src/index.js';
 import { NumericModel, Unit } from './mock/NumericModel';
 
 const { describe, it } = global;
 
-describe('ExtendableRecord', () => {
+describe('ImmutableModel', () => {
   it('is equal when not mutated', () => {
     const myRecord = new NumericModel({ value: 5 });
 
@@ -29,11 +29,6 @@ describe('ExtendableRecord', () => {
     expect(myRecord.id).to.equal(null);
   });
 
-  it('throws error on write to non-defaulted values', () => {
-    const myRecord = new NumericModel();
-    expect(() => myRecord.set('nonPresentKey')).to.throw(Error);
-  });
-
   it('allows use of class methods', () => {
     const mile = new Unit('mile', 'miles');
     const myRecord = new NumericModel({ value: 5, units: mile });
@@ -52,89 +47,55 @@ describe('ExtendableRecord', () => {
   });
 
   it('allows subclasses to override default values', () => {
-    class BaseClass extends ExtendableRecord {
-
+    class BaseClass extends ImmutableModel {
+      get overrideValue() {
+        return this.get('overrideValue', 'overrideValue');
+      }
+      get baseValue() {
+        return this.get('baseValue', 'baseValue');
+      }
     }
-
-    BaseClass.defaultProperties = {
-      overrideValue: 'overrideValue',
-      baseValue: 'baseValue',
-    };
 
     class SubClass extends BaseClass {
-
+      get overrideValue() {
+        return this.get('overrideValue', 'subclassOverride');
+      }
     }
-
-    SubClass.defaultProperties = {
-      overrideValue: 'subclassOverride',
-    };
 
     const base = new BaseClass();
     const sub = new SubClass();
 
-    expect(base.get('overrideValue')).to.equal('overrideValue');
-    expect(base.get('baseValue')).to.equal('baseValue');
+    expect(base.overrideValue).to.equal('overrideValue');
+    expect(base.baseValue).to.equal('baseValue');
 
-    expect(sub.get('overrideValue')).to.equal('subclassOverride');
-    expect(sub.get('baseValue')).to.equal('baseValue');
-  });
-
-
-  it('sets _name attribute with class name', () => {
-    class BaseClass extends ExtendableRecord {
-
-    }
-
-    BaseClass.defaultProperties = {
-    };
-
-    class SubClass extends BaseClass {
-
-    }
-
-    SubClass.defaultProperties = {
-      a: 'b',
-    };
-
-    const base = new BaseClass();
-    const sub = new SubClass();
-
-    /* eslint-disable no-underscore-dangle */
-    expect(base._name).to.equal('BaseClass');
-
-    expect(sub._name).to.equal('SubClass');
-    expect(sub.set('a', 2)._name).to.equal('SubClass');
-    /* eslint-enable no-underscore-dangle */
+    expect(sub.overrideValue).to.equal('subclassOverride');
+    expect(sub.baseValue).to.equal('baseValue');
   });
 
   it('supports empty defaultProperties', () => {
-    class BaseClass extends ExtendableRecord {
-
+    class BaseClass extends ImmutableModel {
+      get base() {
+        return this.get('base', 'base');
+      }
     }
-
-    BaseClass.defaultProperties = {
-      base: 'base',
-    };
 
     class SubClass1 extends BaseClass {
 
     }
 
     class SubClass2 extends SubClass1 {
-
+      get sub() {
+        return this.get('sub', 'sub');
+      }
     }
-
-    SubClass2.defaultProperties = {
-      sub: 'sub',
-    };
 
     const base = new BaseClass();
     const sub1 = new SubClass1();
     const sub2 = new SubClass2();
 
-    expect(base.get('base')).to.equal('base');
-    expect(sub1.get('base')).to.equal('base');
-    expect(sub2.get('base')).to.equal('base');
-    expect(sub2.get('sub')).to.equal('sub');
+    expect(base.base).to.equal('base');
+    expect(sub1.base).to.equal('base');
+    expect(sub2.base).to.equal('base');
+    expect(sub2.sub).to.equal('sub');
   });
 });

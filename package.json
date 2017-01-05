@@ -1,8 +1,8 @@
 {
-  "name": "extendable-record",
+  "name": "imumo",
   "version": "1.0.4",
   "license": "MIT",
-  "description": "Extendable (Inheritable) Immutable Records for Immutable Object Oriented Patterns",
+  "description": "Immutable Data Models for Javascript.",
   "keywords": [
     "immutable",
     "immutablejs",
@@ -11,10 +11,7 @@
     "class",
     "extend"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/djoeman84/extendable-record"
-  },
+  "repository": "https://github.com/joon-io/imumo",
   "main": "dist/index.js",
   "scripts": {
     "clean": "rimraf dist",
@@ -22,10 +19,10 @@
     "build:bower": "webpack",
     "build:bower-prod": "NODE_ENV=production webpack",
     "lint": "eslint src tests",
-    "lint:fix": "npm run lint -- --fix",
+    "lint:fix": "yarn run lint -- --fix",
     "test": "mocha tests --compilers js:babel-register",
-    "test:dev": "npm run test -- --watch",
-    "prepublish": "npm install && npm run clean && npm run build"
+    "test:dev": "yarn run test -- --watch",
+    "prepublish": "yarn run clean && yarn run build"
   },
   "devDependencies": {
     "babel-cli": "^6.7.5",
@@ -48,5 +45,6 @@
   "dependencies": {
     "babel-runtime": "^6.6.1",
     "immutable": "^3.8.1"
-  }
+  },
+  "author": "Joe Delgado"
 }

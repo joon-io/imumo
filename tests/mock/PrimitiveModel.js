@@ -1,6 +1,10 @@
 import { BaseModel } from './BaseModel';
 
 export class PrimitiveModel extends BaseModel {
+  get value() {
+    return this.get('value', null);
+  }
+
   getValue() {
     return this.value;
   }
@@ -8,6 +12,3 @@ export class PrimitiveModel extends BaseModel {
     return this.set('value', newValue);
   }
 }
-PrimitiveModel.defaultProperties = {
-  value: null,
-};
