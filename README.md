@@ -96,23 +96,21 @@ console.log(myBank.toString()); // 0 dollars -- myBank was not mutated :(
 ## Performance
 Since the models are immutable, we can easily memoize the last return value of argument-less methods. This lets you write expensive getters without having to worry too much about the performance impact. This also allows you to use strict equality checking against derived data (Pure render all the models).
 ```javascript
+import { List } from 'immutable';
 import { ImmutableModel } from 'imumo';
 
-class MemoizedModel extends ImmutableModel {
-  constructor() {
-    this.getFilteredList = this.memoize(this.getFilteredList);
+class InboxModel extends ImmutableModel {
+  didCreateInstance() {
+    this.getUnreadEmails = this.memoize(() => this.getUnreadEmails());
   }
-  get items() {
-    return this.get('items', []);
-  }
-  get filterTerm() {
-    return this.get('filterTerm', '');
-  }
-  getFilteredList() {
-    return this.items
-      .filter(item => this.filterTerm.indexOf(item) != -1);
+  get emails() { return this.get('emails', new List()); }
+  getUnreadEmails() {
+    return this.emails.filter(email => !email.read);
   }
 }
+
+const emailModel = new emailModel(List([...]));
+console.log(emailModel.getUnreadEmails() === emailModel.getUnreadEmails()); // true
 ```
 
 ## Credits
