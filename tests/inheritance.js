@@ -1,11 +1,9 @@
 import { expect } from 'chai';
-import { ImmutableModel } from '../src/index.js';
 import { NumericModel, Unit } from './mock/NumericModel';
 
 const { describe, it } = global;
 
 describe('ImmutableModel:inheritance', () => {
-
   it('allows use of class methods', () => {
     const mile = new Unit('mile', 'miles');
     const myRecord = new NumericModel({ value: 5, units: mile });

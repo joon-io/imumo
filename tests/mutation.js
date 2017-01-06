@@ -1,11 +1,9 @@
 import { expect } from 'chai';
 import { ImmutableModel } from '../src/index.js';
-import { NumericModel, Unit } from './mock/NumericModel';
 
 const { describe, it } = global;
 
 describe('ImmutableModel:mutation', () => {
-
   it('maintains methods on mutation', () => {
     class MyClass extends ImmutableModel {
       get value() {
@@ -17,7 +15,7 @@ describe('ImmutableModel:mutation', () => {
       }
     }
 
-    const myClassInstance = new MyClass({value: 'hello'});
+    const myClassInstance = new MyClass({ value: 'hello' });
     const myClassCopy = myClassInstance.set('value', 'world');
 
     expect(myClassInstance.getReversedValue()).to.equal('olleh');
@@ -30,7 +28,7 @@ describe('ImmutableModel:mutation', () => {
       get value() { return this.get('value', null); }
     }
 
-    const myInstance = new MySubModel({value: 1});
+    const myInstance = new MySubModel({ value: 1 });
     const myInstanceCopy = myInstance.set('value', 2);
 
     const myInstancePrototype = Object.getPrototypeOf(myInstance);
@@ -39,7 +37,6 @@ describe('ImmutableModel:mutation', () => {
     expect(myInstancePrototype).to.equal(myInstanceCopyPrototype);
 
     expect(myInstance.constructor).to.equal(myInstanceCopy.constructor);
-
   });
 
   it('maintains types after mutation', () => {
@@ -48,7 +45,7 @@ describe('ImmutableModel:mutation', () => {
       get value() { return this.get('value', null); }
     }
 
-    const myInstance = new MySubModel({value: 1});
+    const myInstance = new MySubModel({ value: 1 });
     const myInstanceCopy = myInstance.set('value', 2);
 
     expect(myInstance).to.be.an.instanceof(MySubModel);

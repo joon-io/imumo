@@ -1,11 +1,10 @@
 import { expect } from 'chai';
 import { ImmutableModel } from '../src/index.js';
-import { NumericModel, Unit } from './mock/NumericModel';
+import { NumericModel } from './mock/NumericModel';
 
 const { describe, it } = global;
 
 describe('ImmutableModel:values', () => {
-
   it('allows read on defaulted values', () => {
     const myRecord = new NumericModel();
 
@@ -55,5 +54,4 @@ describe('ImmutableModel:values', () => {
     expect(sub.overrideValue).to.equal('subclassOverride');
     expect(sub.baseValue).to.equal('baseValue');
   });
-
 });

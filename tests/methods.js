@@ -1,11 +1,9 @@
 import { expect } from 'chai';
 import { ImmutableModel } from '../src/index.js';
-import { NumericModel, Unit } from './mock/NumericModel';
 
 const { describe, it } = global;
 
 describe('ImmutableModel:methods', () => {
-
   class TestModel extends ImmutableModel {
     get value() { return this.get('value', 0); }
   }
@@ -53,13 +51,5 @@ describe('ImmutableModel:methods', () => {
     expect(cleared.get('value')).to.be.undefined;
     expect(testInstanceWithValue.value).to.equal(123);
     expect(cleared.value).to.equal(0);
-  });
-
-  it('implements wasAltered', () => {
-
-  });
-
-  it('implements __ensureOwner', () => {
-
   });
 });

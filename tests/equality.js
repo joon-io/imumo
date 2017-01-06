@@ -1,6 +1,5 @@
 import { expect } from 'chai';
-import { ImmutableModel } from '../src/index.js';
-import { NumericModel, Unit } from './mock/NumericModel';
+import { NumericModel } from './mock/NumericModel';
 
 const { describe, it } = global;
 
