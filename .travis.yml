@@ -1,25 +1,25 @@
 language: node_js
 node_js:
-  - "5"
-  - "6"
+- '5'
+- '6'
 script:
-  - yarn install
-  - yarn run lint
-  - yarn test
-  - yarn run build
+- yarn install
+- yarn run lint
+- yarn test
+- yarn run build
 branches:
   only:
-    - master
-    - /^rc\/.*$/
+  - master
+  - /^rc\/.*$/
 cache:
   yarn: true
   directories:
-    - node_modules
-    - $HOME/.npm
+  - node_modules
+  - $HOME/.npm
 deploy:
   provider: npm
   email: djoeman84+npm@gmail.com
   on:
     branch: master
   api_key:
-    secure: 02RvAQ99jjVuNbtsW4zXJt5BQ6uxrxob4HBmUFYHg+nVNx2jPEFNUEEhvrGYE/CNgoIbPvAHi058sdZ3x7me12PfYlVnfkDMrGIum0IT4NczL8uLXblYgGvorfw7eAbLzzPCSwOzC3hVG4S9+sEgcF8jl+elX4ZQm1zZhSdnPJWQ3Gelfc8dd/d+4NdjS062eHq16t+ZmiC6ge2xoqbVVJyYmv/oKFiDiauw6BwDRePgRmwTW0L9yi6KwTqK59U3U5xi1FD5JBAvChyvktoH85HKLwgYVZ5BzTGA99i4Umv8f+ofPhXi0Y+x0+RA1BloqeW+oCsVYpG6mT5d3Cw+I9GD46Z0oOer6zaCxYYO/LKcI7aO6dPHpCKS9DrhwfGqk5lj9Qyo0rC9E2oRQmPfrSj0fwJD198maNDK2VFPvw0LUjvsLKQbEt4FutuOezSIannjzKkD1YNY7rFJhamlo7LYUSsC8NZk+91wKt2R0T9IdQt7hPIdZRFkc5lCA2+HXqvZ6llbUyekSpazHqor8Aq+owdXcLRmcaA1cBLbLrwhTulpZ8A85Rz+ho+Bv+zXOEMyMIpV4cEjH7d9NsWiu1uI9D6FBXrFPTC8woX5uFOzzSci6JHDzs4BgJ/rHncpPvt+2ECkBtjrP9ko51laDDdBjetkMDnLpwDS39jT6zo=
+    secure: TVxZnZBibMSuaWR7q4/qNEduEgvgyCM2lldYV3B6Rfed1fpaNUFdbai1d3dxjA4iZKib1t3e+Wn67YNPPGCeBHyjXxbU7QcpvpaKptKomIqn/HW6QwKoDwFCAvFXe7IiefTqYhRHmKPuegtnL3fjJH37zWHcaozaZxbGlptEpe98G2D9AJkHTkcBxuqv4r4xcom/ghNE6eig1B7aks41SQGIby2aa7VcJoJZeJ4MXv/urbnVhzXZ1eGz7EpnpF0Bx1aP2KPISNeKIEGmQVvMJA61V1UzueMqe/EyOkSVmGlklGvlIbpeu0O1fsGJmkl8c/Uxp9Hm/G3lfmCBjHaaggfK5x6zcxEBP5Iu7HeENLA23/BHG6Ws1T62/ZkEg+l+KRLtf6JwKoSlpxjmepbVYg+IgBMPMOsjWdFxvivRV1Zb6nu2lpkdnBlCRWNO+TT9B/fU4DuNq6yu3oMB5+b0QUhCkNe78UK1wEeOO+CUChq128TXuAVXh6XpKjZlsl9yWQqo/nwNEQWN37Zu39Ou5xAP3VVwfAPQfIMyPS0xSzzGZ5obYXyXCNJs7nt/lToV5s9A0P7tMDyYnwN8OwMWdV/d5+n1i3PjpKIznp4Jj6napyCXgYCJhAs3CEKvVcnlOji5r18S5vD/LhKjZwkIKxF4/KRMtH/9myY5iWL4V5s=
