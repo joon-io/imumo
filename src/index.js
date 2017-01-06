@@ -1,4 +1,4 @@
-import { Collection, Record, Map } from 'immutable';
+import { Collection, Map } from 'immutable';
 
 import { makeModel } from './util';
 
@@ -9,12 +9,18 @@ export class ImmutableModel extends Collection.Keyed {
     // eslint-disable-next-line no-underscore-dangle, new-cap
     this._map = Map(values);
   }
-
+  toString() {
+    return this.constructor.name;
+  }
   get(key, notSetVal) {
     return this._map.get(key, notSetVal);
   }
   clear() {
-    // TODO
+    const newMap = this._map.clear();
+    if (this.__ownerID || newMap === this._map) {
+      return this;
+    }
+    return makeModel(this, newMap);
   }
   set(key, val) {
     const newMap = this._map.set(key, val);
@@ -33,22 +39,23 @@ export class ImmutableModel extends Collection.Keyed {
   wasAltered() {
     return this._map.wasAltered();
   }
+  __ensureOwner(ownerID) {
+    if (ownerID === this.__ownerID) {
+      return this;
+    }
+    const newMap = this._map.__ensureOwner(ownerID);
+    if (!ownerID) {
+      this.__ownerID = ownerID;
+      this._map = newMap;
+      return this;
+    }
+    return makeModel(this, newMap, ownerID);
+  }
 }
 
 const ImmutableModelPrototype = ImmutableModel.prototype;
 const MapPrototype = Map.prototype;
-const RecordPrototype = Record.prototype;
 const DELETE = 'delete';
-ImmutableModelPrototype.toString = RecordPrototype.toString;
-ImmutableModelPrototype.clear = RecordPrototype.clear;
-ImmutableModelPrototype.set = RecordPrototype.set;
-ImmutableModelPrototype.remove = RecordPrototype.remove;
-ImmutableModelPrototype.wasAltered = RecordPrototype.wasAltered;
-/* eslint-disable no-underscore-dangle */
-ImmutableModelPrototype.__iterator = RecordPrototype.__iterator;
-ImmutableModelPrototype.__iterate = RecordPrototype.__iterate;
-ImmutableModelPrototype.__ensureOwner = RecordPrototype.__ensureOwner;
-/* eslint-enable no-underscore-dangle */
 
 ImmutableModelPrototype[DELETE] = ImmutableModelPrototype.remove;
 ImmutableModelPrototype.deleteIn = undefined;
