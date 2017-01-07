@@ -115,6 +115,7 @@ console.log(emailModel.getUnreadEmails() === emailModel.getUnreadEmails()); // t
 
 ## Methods ImmutableModel
 Signatures using flow notation `[functionName]([arg] : [argType]) : [returnType]`. Note that `T` denotes either the same instance or a new instance of the same type. ImmutableModels create new instances with the same type whenever a mutation occurs.
+
 | signature | description |
 | --------- | ----------- |
 | `didCreateInstance()` | Lifecycle method called after new instance is made (due to 'mutation') |
