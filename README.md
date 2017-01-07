@@ -113,6 +113,32 @@ const emailModel = new emailModel(List([...]));
 console.log(emailModel.getUnreadEmails() === emailModel.getUnreadEmails()); // true
 ```
 
+## Methods ImmutableModel
+Signatures using flow notation `[functionName]([arg] : [argType]) : [returnType]`. Note that `T` denotes either the same instance or a new instance of the same type. ImmutableModels create new instances with the same type whenever a mutation occurs.
+| signature | description |
+| --------- | ----------- |
+| `didCreateInstance()` | Lifecycle method called after new instance is made (due to 'mutation') |
+| `toString(): String` | Returns string representation of model |
+| `get(key: String, notSetVal: any): any` | Gets value by key if exists, otherwise returns `notSetVal` |
+| `clear(): T` | Returns self or new `T` without any values in backing Map |
+| `set(key: String, val: any): T` | Returns self or new `T` with key set to value |
+| `remove(key: String): T` | Returns self or new `T` with value at key removed |
+| `removeIn(keyPath: Array<any>): T` | Returns self or new `T` with value at keypath removed |
+| `merge()` | [see Map.merge()](http://facebook.github.io/immutable-js/docs/#/Map/merge) |
+| `mergeWith()` | [see Map.mergeWith()](http://facebook.github.io/immutable-js/docs/#/Map/mergeWith) |
+| `mergeIn()` | [see Map.mergeIn()](http://facebook.github.io/immutable-js/docs/#/Map/mergeIn) |
+| `mergeDeep()` | [see Map.mergeDeep()](http://facebook.github.io/immutable-js/docs/#/Map/mergeDeep) |
+| `mergeDeepWith()` | [see Map.mergeDeepWith()](http://facebook.github.io/immutable-js/docs/#/Map/mergeDeepWith) |
+| `mergeDeepIn()` | [see Map.mergeDeepIn()](http://facebook.github.io/immutable-js/docs/#/Map/mergeDeepIn) |
+| `setIn()` | [see Map.setIn()](http://facebook.github.io/immutable-js/docs/#/Map/setIn) |
+| `update()` | [see Map.update()](http://facebook.github.io/immutable-js/docs/#/Map/update) |
+| `updateIn()` | [see Map.updateIn()](http://facebook.github.io/immutable-js/docs/#/Map/updateIn) |
+| `withMutations()` | [see Map.withMutations()](http://facebook.github.io/immutable-js/docs/#/Map/withMutations) |
+| `asMutable()` | [see Map.asMutable()](http://facebook.github.io/immutable-js/docs/#/Map/asMutable) |
+| `asImmutable()` | [see Map.asImmutable()](http://facebook.github.io/immutable-js/docs/#/Map/asImmutable) |
+
+Many methods are duplicates/copies of [Immutable Map methods](http://facebook.github.io/immutable-js/docs/#/Map), which have more thourough documentation and examples.
+
 ## Credits
 
 - [ImmutableJS](https://github.com/facebook/immutable-js) for underlying data structures
