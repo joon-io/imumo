@@ -17,6 +17,7 @@ cache:
   - node_modules
   - $HOME/.npm
 deploy:
+  skip_cleanup: true
   provider: npm
   email: djoeman84+npm@gmail.com
   on:
