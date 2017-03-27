@@ -10,7 +10,40 @@ describe('ImmutableModel:methods', () => {
   const testInstance = new TestModel();
 
   it('implements toString', () => {
-    expect(testInstance.toString()).to.equal('TestModel');
+    const target = new TestModel({value: 2});
+    expect(target.toString()).to.equal('TestModel { "value": 2 }');
+  });
+
+  it('implements toJS', () => {
+    const target = new TestModel({value: 2, otherValue: 5}).toJS();
+    expect(target.value).to.equal(2);
+    expect(target.otherValue).to.equal(5);
+  });
+
+  it('implements toJSON', () => {
+    const target = new TestModel({value: 2, otherValue: 5}).toJSON();
+    expect(target.value).to.equal(2);
+    expect(target.otherValue).to.equal(5);
+  });
+
+  it('implements equals', () => {
+    const target = new TestModel({value: 2, otherValue: 5});
+    const targetEquals = new TestModel({value: 2, otherValue: 5});
+    const targetNoEquals = new TestModel({value: 2, otherValue: 6});
+    expect(target === targetEquals).to.be.false;
+    expect(target === targetNoEquals).to.be.false;
+    expect(target.equals(targetEquals)).to.be.true;
+    expect(target.equals(targetNoEquals)).to.be.false;
+
+    class OtherModel extends TestModel{}
+    const instanceA = new TestModel({value: 1});
+    const instanceB = new OtherModel({value: 1});
+    expect(instanceA.equals(instanceB)).to.be.false;
+  });
+
+  it('implements hashCode', () => {
+    const target = new TestModel({value: 2, otherValue: 5});
+    expect(target.hashCode()).to.equal(399553346);
   });
 
   it('implements has', () => {

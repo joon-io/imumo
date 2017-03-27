@@ -11,9 +11,6 @@ export default class ImmutableModel extends Collection.Keyed {
     this.didCreateInstance();
   }
   didCreateInstance() { }
-  toString() {
-    return this.constructor.name;
-  }
   get(key, notSetVal) {
     return this._map.get(key, notSetVal);
   }
@@ -40,6 +37,24 @@ export default class ImmutableModel extends Collection.Keyed {
   }
   wasAltered() {
     return this._map.wasAltered();
+  }
+  toJSON() {
+    return this._map.toJSON();
+  }
+  toJS() {
+    return this._map.toJS();
+  }
+  equals(other) {
+    return other.constructor === this.constructor && this._map.equals(other._map);
+  }
+  hashCode() {
+    // known issue- doesn't hash constructor class name so two objects with
+    // different classes could hash to the same val.
+    // For this reason a.hashCode() === b.hashCode() !=> a.equals(b)
+    return this._map.hashCode();
+  }
+  toString() {
+    return this._map.toString().replace(/^Map/, this.constructor.name);
   }
   __ensureOwner(ownerID) {
     if (ownerID === this.__ownerID) {
