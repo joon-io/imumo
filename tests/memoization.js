@@ -34,4 +34,18 @@ describe('memoized methods', () => {
 
     expect(updatedMM.getMemoizedFilteredList()).to.equal(updatedMM.getMemoizedFilteredList());
   });
+
+  it('support arguments', () => {
+    const mm = new MemoizedModel({ items: [1, 5, 6, 3, 8] });
+
+    expect(mm.getItemsLargerThan(4)).to.equal(mm.getItemsLargerThan(4));
+    expect(mm.getItemsLargerThan(4)).to.not.equal(mm.getItemsLargerThan(5));
+  });
+
+  it('support immutable arguments', () => {
+    const m1 = new MemoizedModel({ items: [1, 5, 6, 3, 8] });
+    const m2 = new MemoizedModel({ items: [6, 3, 12] });
+
+    expect(m1.getIntersection(m2)).to.equal(m1.getIntersection(m2));
+  });
 });

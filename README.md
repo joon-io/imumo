@@ -94,7 +94,9 @@ console.log(myBank.toString()); // 0 dollars -- myBank was not mutated :(
 ```
 
 ## Performance
-Since the models are immutable, we can easily memoize the last return value of argument-less methods. This lets you write expensive getters without having to worry too much about the performance impact. This also allows you to use strict equality checking against derived data (Pure render all the models).
+Since the models are immutable, we can store memoized results of method calls on our model instances. Since memoization is stored on the instance, any mutations will invalidate the cache and gargabe collection comes for free. This lets you write expensive getters without having to worry too much about the performance impact. This also allows you to use strict equality checking against derived data (Pure render all the views).
+**Note:** Since the constructor is only run when `new` is called, you need to put your memoizers in the `didCreateInstance` lifecycle hook.
+**Note:** Memoization uses strict equality to check for matches, so passing in a new instance of an Immutable List, for example, will not be memoized. Remember to set the cache size if you think there will be a large number or unique calls.
 ```javascript
 import { List } from 'immutable';
 import { ImmutableModel } from 'imumo';
@@ -102,15 +104,20 @@ import { ImmutableModel } from 'imumo';
 class InboxModel extends ImmutableModel {
   didCreateInstance() {
     this.getUnreadEmails = this.memoize(() => this.getUnreadEmails());
+    this.getEmailsFromUser = this.memoize(user => this.getEmailsFromUser(user));
   }
   get emails() { return this.get('emails', new List()); }
   getUnreadEmails() {
     return this.emails.filter(email => !email.read);
   }
+  getEmailsFromUser(user) {
+    return this.emails.filter(email => email.user === user);
+  }
 }
 
 const emailModel = new emailModel(List([...]));
 console.log(emailModel.getUnreadEmails() === emailModel.getUnreadEmails()); // true
+console.log(emailModel.getEmailsFromUser('bobby@gmail.com') === emailModel.getEmailsFromUser('bobby@gmail.com')); // true
 ```
 
 ## Methods ImmutableModel
@@ -138,7 +145,7 @@ Signatures using flow notation `[functionName]([arg] : [argType]) : [returnType]
 | `asMutable()` | [see Map.asMutable()](http://facebook.github.io/immutable-js/docs/#/Map/asMutable) |
 | `asImmutable()` | [see Map.asImmutable()](http://facebook.github.io/immutable-js/docs/#/Map/asImmutable) |
 
-Many methods are duplicates/copies of [Immutable Map methods](http://facebook.github.io/immutable-js/docs/#/Map), which have more thourough documentation and examples.
+Many methods are duplicates/copies of [Immutable Map methods](http://facebook.github.io/immutable-js/docs/#/Map), which have more thorough documentation and examples.
 
 ## Credits
 

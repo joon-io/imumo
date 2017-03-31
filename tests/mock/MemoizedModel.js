@@ -8,6 +8,8 @@ export default class MemoizedMethod extends ImmutableModel {
   }
   didCreateInstance() {
     this.getMemoizedFilteredList = memoize(this.getMemoizedFilteredList.bind(this));
+    this.getItemsLargerThan = memoize(this.getItemsLargerThan.bind(this));
+    this.getIntersection = memoize(this.getIntersection.bind(this));
   }
 
   get items() { return this.get('items', new List()); }
@@ -17,5 +19,13 @@ export default class MemoizedMethod extends ImmutableModel {
   }
   getMemoizedFilteredList() {
     return this.getFilteredList();
+  }
+  getItemsLargerThan(num) {
+    return this.items.filter(item => item > num);
+  }
+  getIntersection(other) {
+    return this.items.filter(item =>
+      other.items.includes(item)
+    );
   }
 }
