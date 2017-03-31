@@ -56,6 +56,12 @@ export default class ImmutableModel extends Collection.Keyed {
   toString() {
     return this._map.toString().replace(/^Map/, this.constructor.name);
   }
+  __iterator(...args) {
+    return this._map.__iterator(...args);
+  }
+  __iterate(...args) {
+    return this._map.__iterate(...args);
+  }
   __ensureOwner(ownerID) {
     if (ownerID === this.__ownerID) {
       return this;
