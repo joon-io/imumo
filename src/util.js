@@ -7,7 +7,7 @@ export function makeModel(likeModel, map, ownerId) {
 }
 
 export function every(arr, predicate) {
-  for (let i = 0; i < arr.length; i++) {
+  for (let i = 0; i < arr.length; i += 1) {
     if (!predicate(arr[i], i, arr)) {
       return false;
     }
@@ -16,5 +16,5 @@ export function every(arr, predicate) {
 }
 
 export function toEnd(arr, item) {
- return arr.filter(i => i !== item).concat(item);
+  return arr.filter(i => i !== item).concat(item);
 }
