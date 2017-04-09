@@ -99,12 +99,12 @@ Since the models are immutable, we can store memoized results of method calls on
 **Note:** Memoization uses strict equality to check for matches, so passing in a new instance of an Immutable List, for example, will not be memoized. Remember to set the cache size if you think there will be a large number or unique calls.
 ```javascript
 import { List } from 'immutable';
-import { ImmutableModel } from 'imumo';
+import { ImmutableModel, memoize } from 'imumo';
 
 class InboxModel extends ImmutableModel {
   didCreateInstance() {
-    this.getUnreadEmails = this.memoize(() => this.getUnreadEmails());
-    this.getEmailsFromUser = this.memoize(user => this.getEmailsFromUser(user));
+    this.getUnreadEmails = memoize(this.getUnreadEmails.bind(this));
+    this.getEmailsFromUser = memoize(this.getEmailsFromUser.bind(this));
   }
   get emails() { return this.get('emails', new List()); }
   getUnreadEmails() {
@@ -115,9 +115,9 @@ class InboxModel extends ImmutableModel {
   }
 }
 
-const emailModel = new emailModel(List([...]));
-console.log(emailModel.getUnreadEmails() === emailModel.getUnreadEmails()); // true
-console.log(emailModel.getEmailsFromUser('bobby@gmail.com') === emailModel.getEmailsFromUser('bobby@gmail.com')); // true
+const inbox = new InboxModel(List([...]));
+console.log(inbox.getUnreadEmails() === inbox.getUnreadEmails()); // true
+console.log(inbox.getEmailsFromUser('bobby@gmail.com') === inbox.getEmailsFromUser('bobby@gmail.com')); // true
 ```
 
 ## Methods ImmutableModel
